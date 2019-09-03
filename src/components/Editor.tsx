@@ -1,6 +1,30 @@
 import * as React from 'react';
 import marked from 'marked';
-import './editor.css';
+import styled from "styled-components";
+
+const Markdown = styled.textarea`
+  box-sizing: border-box;
+  width: 50%;
+  height: 100vh;
+  border-right: 1px solid black;
+  outline: none;
+  resize: none;
+  padding: 10px 15px;
+`;
+
+const Rendered = styled.div`
+  box-sizing: border-box;
+  width: 50%;
+  height: 100vh;
+  padding: 10px 15px;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+`;
 
 interface State {
   renderedText: string;
@@ -11,10 +35,11 @@ export default class Editor extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    const initText = '# Head';
+    const DEFAULT_TEXT = '# Head';
+
     this.state = { 
-      markdownText: initText,
-      renderedText: marked(initText)
+      markdownText: DEFAULT_TEXT,
+      renderedText: marked(DEFAULT_TEXT)
     };
   }
 
@@ -27,12 +52,10 @@ export default class Editor extends React.Component<{}, State> {
 
   render() {
     return (
-      <div className="editor">
-        <div className="markdown">
-          <textarea name="markdown" value={this.state.markdownText} onChange={this.handleChange}></textarea>
-        </div>
-        <div className="rendered" dangerouslySetInnerHTML={{__html: this.state.renderedText}}></div>
-      </div>
+      <Wrapper>
+        <Markdown value={this.state.markdownText} onChange={this.handleChange}></Markdown>
+        <Rendered dangerouslySetInnerHTML={{__html: this.state.renderedText}}></Rendered>
+      </Wrapper>
     )
   }
 }
